@@ -1,0 +1,466 @@
+/* ============================================
+   ArtQuiz – style.css
+   ============================================ */
+
+/* ---- Genel ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: #0D0B14;
+  color: #EDE9FE;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Ekran Geçişleri ---- */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ---- Arka Plan Dekorasyonu ---- */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+.orb-1 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, #7C3AED55, transparent 70%);
+  top: -100px; left: -120px;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb-2 {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, #C9A84C33, transparent 70%);
+  bottom: 80px; right: -80px;
+  animation: orbFloat 10s ease-in-out infinite reverse;
+}
+.orb-3 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, #E11D4822, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbFloat 12s ease-in-out infinite;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0); }
+  33%      { transform: translate(20px, -15px); }
+  66%      { transform: translate(-15px, 20px); }
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ---- Glass Card ---- */
+.glass-card {
+  background: rgba(22, 18, 31, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(46, 37, 69, 0.8);
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(201,168,76,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* ---- Input ---- */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1.1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.art-input {
+  width: 100%;
+  background: rgba(13, 11, 20, 0.6);
+  border: 1px solid #2E2545;
+  border-radius: 14px;
+  padding: 14px 16px 14px 44px;
+  color: #EDE9FE;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  outline: none;
+}
+.art-input::placeholder { color: #6B7280; }
+.art-input:focus {
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+.art-input.error {
+  border-color: #E11D48;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
+}
+.error-msg {
+  color: #F87171;
+  font-size: 0.75rem;
+  margin-top: 6px;
+  margin-left: 4px;
+}
+.error-msg.hidden { display: none; }
+
+/* ---- Butonlar ---- */
+.art-btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #7C3AED, #5B21B6);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 14px;
+  padding: 14px 24px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+.art-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+}
+.art-btn-primary:active { transform: translateY(0); }
+
+.art-btn-secondary {
+  background: rgba(30, 24, 41, 0.8);
+  border: 1px solid #2E2545;
+  border-radius: 14px;
+  padding: 14px 24px;
+  color: #EDE9FE;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+  text-align: center;
+}
+.art-btn-secondary:hover {
+  border-color: #7C3AED;
+  transform: translateY(-2px);
+}
+
+.btn-shimmer {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 2.5s infinite;
+}
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* ---- Kural rozetleri ---- */
+.rule-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(13,11,20,0.5);
+  border: 1px solid #2E2545;
+  border-radius: 14px;
+  padding: 12px 8px;
+}
+.rule-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---- Timer ---- */
+.timer-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 24, 41, 0.9);
+  border: 1px solid #2E2545;
+  border-radius: 50px;
+  padding: 8px 16px;
+  transition: all 0.3s;
+}
+.timer-icon { font-size: 1rem; }
+.timer-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #C9A84C;
+  min-width: 2ch;
+  text-align: center;
+  transition: color 0.3s;
+}
+.timer-badge.danger {
+  border-color: #E11D4855;
+  box-shadow: 0 0 20px rgba(225, 29, 72, 0.3);
+  animation: pulse-danger 0.8s ease-in-out infinite;
+}
+.timer-badge.danger .timer-number { color: #F87171; }
+@keyframes pulse-danger {
+  0%,100% { box-shadow: 0 0 10px rgba(225,29,72,0.2); }
+  50% { box-shadow: 0 0 30px rgba(225,29,72,0.5); }
+}
+
+/* ---- Progress Bar ---- */
+.progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(46, 37, 69, 0.8);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7C3AED, #C9A84C);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ---- Soru Görseli ---- */
+.art-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1E1829;
+}
+@media (min-width: 640px) {
+  .art-image-wrapper { height: 400px; }
+}
+.art-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.art-image-wrapper:hover .art-image { transform: scale(1.04); }
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(13,11,20,0.7) 100%);
+}
+.question-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: rgba(201, 168, 76, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #C9A84C;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Seçenek Butonları ---- */
+.option-btn {
+  position: relative;
+  background: rgba(13, 11, 20, 0.6);
+  border: 1.5px solid #2E2545;
+  border-radius: 16px;
+  padding: 20px 22px;
+  color: #EDE9FE;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 68px;
+}
+.option-btn::before {
+  content: '';
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1.5px solid #2E2545;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #7C3AED;
+  transition: all 0.2s;
+}
+.option-btn:nth-child(1)::before { content: 'A'; }
+.option-btn:nth-child(2)::before { content: 'B'; }
+
+.option-btn:hover:not(:disabled) {
+  border-color: #7C3AED;
+  background: rgba(124, 58, 237, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
+}
+.option-btn:hover:not(:disabled)::before {
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: white;
+}
+.option-btn:active:not(:disabled) { transform: scale(0.98); }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+.option-btn.correct::before {
+  content: '✓';
+  background: #10B981;
+  border-color: #10B981;
+  color: white;
+}
+.option-btn.wrong {
+  border-color: #E11D48;
+  background: rgba(225, 29, 72, 0.1);
+}
+.option-btn.wrong::before {
+  content: '✗';
+  background: #E11D48;
+  border-color: #E11D48;
+  color: white;
+}
+
+/* ---- Stat Chip ---- */
+.stat-chip {
+  background: rgba(30, 24, 41, 0.7);
+  border: 1px solid #2E2545;
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9CA3AF;
+}
+
+/* ---- Sonuç Ekranı ---- */
+.score-stat-box { padding: 12px 8px; }
+.score-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.score-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.score-glow {
+  text-shadow: 0 0 40px rgba(201, 168, 76, 0.5);
+}
+.shadow-gold-glow {
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.15);
+}
+
+/* ---- Liderlik Tablosu ---- */
+.scoreboard-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(13, 11, 20, 0.5);
+  border: 1px solid #2E2545;
+  border-radius: 14px;
+  transition: border-color 0.2s;
+  animation: fadeIn 0.4s ease forwards;
+}
+.scoreboard-row:hover { border-color: #7C3AED44; }
+.scoreboard-row.rank-1 { border-color: rgba(201, 168, 76, 0.5); background: rgba(201, 168, 76, 0.05); }
+.scoreboard-row.rank-2 { border-color: rgba(192, 192, 192, 0.3); }
+.scoreboard-row.rank-3 { border-color: rgba(205, 127, 50, 0.3); }
+.rank-badge {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  background: rgba(46, 37, 69, 0.8);
+  color: #9CA3AF;
+}
+.rank-badge.gold { background: rgba(201,168,76,0.2); color: #C9A84C; }
+.rank-badge.silver { background: rgba(192,192,192,0.15); color: #C0C0C0; }
+.rank-badge.bronze { background: rgba(205,127,50,0.15); color: #CD7F32; }
+.sb-name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #EDE9FE;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sb-phone {
+  font-size: 0.75rem;
+  color: #6B7280;
+  white-space: nowrap;
+}
+.sb-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #C9A84C;
+  flex-shrink: 0;
+}
+.sb-score-label { font-size: 0.6rem; color: #6B7280; font-weight: 600; text-transform: uppercase; }
+
+/* ---- Current user highlight ---- */
+.scoreboard-row.current-user {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.15);
+}
+
+/* ---- Yükleniyor animasyonu ---- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slideUp 0.5s ease both; }
+.animate-fade-in  { animation: fadeIn 0.4s ease both; }
+
+/* ---- Mobil dokunma iyileştirmeleri ---- */
+@media (max-width: 480px) {
+  .art-image-wrapper { height: 240px; }
+  .score-number { font-size: 2rem; }
+  .timer-number { font-size: 1.2rem; }
+  .option-btn { font-size: 0.95rem; padding: 16px 16px; }
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0D0B14; }
+::-webkit-scrollbar-thumb { background: #2E2545; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7C3AED; }
