@@ -1,12 +1,14 @@
 // ============================================================
 //  firebase.js – ArtQuiz Firebase Yapılandırması
+//  Realtime Database kullanır
 // ============================================================
 
-import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp }
-                                                  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// Firebase config (Firebase Console'dan alınan)
+// Firebase config
 const firebaseConfig = {
   apiKey:            "AIzaSyCQ1keqvYLReiKI3Mm1aG9IlMk9EVp9pfE",
   authDomain:        "start-c748e.firebaseapp.com",
@@ -18,32 +20,33 @@ const firebaseConfig = {
   measurementId:     "G-PF63SXXZQF"
 };
 
-// Firebase & Firestore başlat
+// Firebase & Realtime Database başlat
 const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const db  = getDatabase(app);
 
 // ─────────────────────────────────────────────
 //  saveScoreToFirestore
-//  Oyun bittiğinde çağrılır; "scoreboard" koleksiyonuna yeni belge ekler.
+//  Oyun bittiğinde çağrılır; "scoreboard" düğümüne yeni kayıt ekler.
 //
 //  @param {Object} entry – { name, phone, score, correct, wrong, elapsed, reason, date }
 // ─────────────────────────────────────────────
 export async function saveScoreToFirestore(entry) {
   try {
-    console.log("[ArtQuiz] Firestore'a kayıt gönderiliyor...", entry);
-    const docRef = await addDoc(collection(db, "scoreboard"), {
+    console.log("[ArtQuiz] Realtime Database'e kayıt gönderiliyor...", entry);
+    const scoreboardRef = ref(db, "scoreboard");
+    const newRef = await push(scoreboardRef, {
       name:      entry.name,
       phone:     entry.phone,
       score:     entry.score,
       correct:   entry.correct,
       wrong:     entry.wrong,
-      elapsed:   entry.elapsed,   // ms cinsinden toplam süre
-      reason:    entry.reason,    // 'complete' | 'timeout'
+      elapsed:   entry.elapsed,
+      reason:    entry.reason,
       date:      entry.date,
-      createdAt: serverTimestamp(),
+      createdAt: Date.now(),        // Realtime DB serverTimestamp farklı çalışır
     });
-    console.log("[ArtQuiz] ✅ Skor Firestore'a kaydedildi! Belge ID:", docRef.id);
+    console.log("[ArtQuiz] ✅ Skor kaydedildi! Key:", newRef.key);
   } catch (err) {
-    console.error("[ArtQuiz] ❌ Firestore kayıt hatası:", err.code, err.message);
+    console.error("[ArtQuiz] ❌ Database kayıt hatası:", err.code, err.message);
   }
 }
