@@ -19,7 +19,7 @@ const firebaseConfig = {
   authDomain:        "start-c748e.firebaseapp.com",
   databaseURL:       "https://start-c748e-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:         "start-c748e",
-  storageBucket:     "start-c748e.firebasestorage.app",
+  storageBucket:     "start-c748e.appspot.com",
   messagingSenderId: "79057303135",
   appId:             "1:79057303135:web:72bbae06c7d765a4ac8dea",
   measurementId:     "G-PF63SXXZQF"
@@ -39,7 +39,8 @@ const db        = getFirestore(app);
 // ─────────────────────────────────────────────
 export async function saveScoreToFirestore(entry) {
   try {
-    await addDoc(collection(db, "scoreboard"), {
+    console.log("[ArtQuiz] Firestore'a kayıt gönderiliyor...", entry);
+    const docRef = await addDoc(collection(db, "scoreboard"), {
       name:      entry.name,
       phone:     entry.phone,
       score:     entry.score,
@@ -50,9 +51,9 @@ export async function saveScoreToFirestore(entry) {
       date:      entry.date,
       createdAt: serverTimestamp(),
     });
-    console.log("[ArtQuiz] Skor Firestore'a kaydedildi.");
+    console.log("[ArtQuiz] ✅ Skor Firestore'a kaydedildi! Belge ID:", docRef.id);
   } catch (err) {
     // Firestore hatası oyun akışını engellememeli; sadece logla
-    console.error("[ArtQuiz] Firestore kayıt hatası:", err);
+    console.error("[ArtQuiz] ❌ Firestore kayıt hatası:", err.code, err.message);
   }
 }
