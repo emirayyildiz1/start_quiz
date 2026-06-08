@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sanat Kulübü Bilgi Yarışması – Ünlü tablolar ve ressamlar hakkında sorularla dolu interaktif bir quiz deneyimi." />
+  <title>ArtQuiz – Sanat Bilgi Yarışması</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            playfair: ['"Playfair Display"', 'serif'],
+            inter: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            art: {
+              bg:      '#0D0B14',
+              surface: '#16121F',
+              card:    '#1E1829',
+              border:  '#2E2545',
+              gold:    '#C9A84C',
+              goldlt:  '#F0D080',
+              accent:  '#7C3AED',
+              accentlt:'#A78BFA',
+              rose:    '#E11D48',
+              teal:    '#0D9488',
+              text:    '#EDE9FE',
+              muted:   '#9CA3AF',
+            }
+          },
+          animation: {
+            'fade-in':    'fadeIn 0.5s ease forwards',
+            'slide-up':   'slideUp 0.5s ease forwards',
+            'pulse-gold': 'pulseGold 1.5s ease-in-out infinite',
+            'bounce-in':  'bounceIn 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+          },
+          keyframes: {
+            fadeIn:    { from: { opacity: 0 }, to: { opacity: 1 } },
+            slideUp:   { from: { opacity: 0, transform: 'translateY(30px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+            pulseGold: { '0%,100%': { boxShadow: '0 0 10px #C9A84C55' }, '50%': { boxShadow: '0 0 25px #C9A84CAA' } },
+            bounceIn:  { '0%': { transform: 'scale(0.9)', opacity: 0 }, '60%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)', opacity: 1 } },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-art-bg text-art-text font-inter min-h-screen overflow-x-hidden">
+
+  <!-- ===================== GİRİŞ EKRANI ===================== -->
+  <div id="screen-login" class="screen active">
+    <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative">
+      <!-- Arka plan dekorasyonu -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+      </div>
+
+      <div class="relative z-10 w-full max-w-md animate-slide-up">
+        <!-- Logo / Başlık -->
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-art-card border border-art-gold/40 mb-6 shadow-gold-glow">
+            <span class="text-4xl">🎨</span>
+          </div>
+          <h1 class="font-playfair text-5xl font-black text-art-goldlt mb-2 tracking-tight">ArtQuiz</h1>
+          <p class="text-art-muted font-inter text-sm tracking-widest uppercase">Sanat Bilgi Yarışması</p>
+        </div>
+
+        <!-- Form Kartı -->
+        <div class="glass-card rounded-3xl p-8 shadow-2xl">
+          <h2 class="font-playfair text-2xl font-bold text-art-text mb-1">Yarışmaya Katıl</h2>
+          <p class="text-art-muted text-sm mb-8">Bilgilerini gir ve başla!</p>
+
+          <form id="login-form" novalidate class="space-y-5">
+            <!-- İsim Soyisim -->
+            <div class="form-group">
+              <label for="input-name" class="block text-xs font-semibold text-art-accentlt uppercase tracking-widest mb-2">İsim Soyisim</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input
+                  id="input-name"
+                  type="text"
+                  placeholder="Örn: Ahmet Yılmaz"
+                  autocomplete="name"
+                  class="art-input"
+                />
+              </div>
+              <p id="name-error" class="error-msg hidden">Lütfen adınızı ve soyadınızı girin.</p>
+            </div>
+
+            <!-- Telefon -->
+            <div class="form-group">
+              <label for="input-phone" class="block text-xs font-semibold text-art-accentlt uppercase tracking-widest mb-2">Telefon Numarası</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📱</span>
+                <input
+                  id="input-phone"
+                  type="tel"
+                  placeholder="05XXXXXXXXX"
+                  autocomplete="tel"
+                  inputmode="numeric"
+                  maxlength="11"
+                  class="art-input"
+                />
+              </div>
+              <p id="phone-error" class="error-msg hidden">Geçerli bir telefon numarası girin (sadece rakam, en az 10 hane).</p>
+            </div>
+
+            <!-- Başla Butonu -->
+            <button id="btn-start" type="submit" class="art-btn-primary w-full mt-2">
+              <span class="btn-text">Yarışmaya Başla →</span>
+              <span class="btn-shimmer"></span>
+            </button>
+          </form>
+
+          <!-- Kural özeti -->
+          <div class="mt-8 pt-6 border-t border-art-border">
+            <p class="text-art-muted text-xs text-center mb-4 uppercase tracking-widest font-semibold">Yarışma Kuralları</p>
+            <div class="grid grid-cols-3 gap-3">
+              <div class="rule-badge">
+                <span class="text-xl">❓</span>
+                <span class="rule-label">10 Soru</span>
+              </div>
+              <div class="rule-badge">
+                <span class="text-xl">⏱️</span>
+                <span class="rule-label">30 Saniye</span>
+              </div>
+              <div class="rule-badge">
+                <span class="text-xl">🏆</span>
+                <span class="rule-label">Liderlik</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-art-muted text-xs mt-6">© 2026 ArtQuiz · Sanat Kulübü Etkinliği</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== OYUN EKRANI ===================== -->
+  <div id="screen-quiz" class="screen hidden">
+    <div class="min-h-screen flex flex-col px-4 py-6 relative">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="orb orb-1 opacity-30"></div>
+        <div class="orb orb-2 opacity-20"></div>
+        <div class="grid-overlay"></div>
+      </div>
+
+      <div class="relative z-10 w-full max-w-2xl mx-auto flex flex-col flex-1">
+
+        <!-- Üst Bar -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <span class="font-playfair text-xl font-bold text-art-goldlt">ArtQuiz</span>
+            <div class="w-px h-5 bg-art-border"></div>
+            <div id="player-name-display" class="text-art-muted text-sm font-inter"></div>
+          </div>
+          <div id="timer-badge" class="timer-badge">
+            <span class="timer-icon">⏱</span>
+            <span id="timer-display" class="timer-number">30</span>
+            <span class="text-art-muted text-xs">sn</span>
+          </div>
+        </div>
+
+        <!-- İlerleme -->
+        <div class="mb-5">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-art-muted text-xs font-semibold uppercase tracking-widest">İlerleme</span>
+            <span id="progress-text" class="text-art-goldlt text-xs font-bold">1 / 10</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="progress-bar" class="progress-bar-fill" style="width:10%"></div>
+          </div>
+        </div>
+
+        <!-- Soru Kartı -->
+        <div id="question-card" class="glass-card rounded-3xl p-6 mb-5 flex-1 flex flex-col animate-fade-in">
+
+          <!-- Görsel -->
+          <div class="art-image-wrapper mb-5">
+            <img id="question-image" src="" alt="Eser görseli" class="art-image" loading="lazy" />
+            <div class="image-overlay"></div>
+            <div id="question-badge" class="question-badge"></div>
+          </div>
+
+          <!-- Soru Metni -->
+          <p id="question-text" class="font-playfair text-xl font-bold text-art-text mb-6 leading-relaxed text-center"></p>
+
+          <!-- Seçenekler -->
+          <div id="options-container" class="grid grid-cols-1 gap-4 mt-auto">
+            <!-- JS ile doldurulacak -->
+          </div>
+        </div>
+
+        <!-- Skor göstergesi -->
+        <div class="flex justify-center gap-6">
+          <div class="stat-chip">✅ <span id="correct-count">0</span> Doğru</div>
+          <div class="stat-chip">❌ <span id="wrong-count">0</span> Yanlış</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SONUÇ EKRANI ===================== -->
+  <div id="screen-result" class="screen hidden">
+    <div class="min-h-screen flex flex-col items-center px-4 py-10 relative">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+      </div>
+
+      <div class="relative z-10 w-full max-w-2xl">
+
+        <!-- Başlık -->
+        <div class="text-center mb-8 animate-slide-up">
+          <div id="result-emoji" class="text-6xl mb-4">🎨</div>
+          <h2 class="font-playfair text-4xl font-black text-art-goldlt mb-2" id="result-title">Tebrikler!</h2>
+          <p class="text-art-muted" id="result-subtitle">Harika bir performans sergiyledin.</p>
+        </div>
+
+        <!-- Skor Kartı -->
+        <div class="glass-card rounded-3xl p-7 mb-6 animate-slide-up" style="animation-delay:0.1s">
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="score-stat-box">
+              <div id="res-correct" class="score-number text-green-400">0</div>
+              <div class="score-label">Doğru</div>
+            </div>
+            <div class="score-stat-box border-x border-art-border">
+              <div id="res-wrong" class="score-number text-red-400">0</div>
+              <div class="score-label">Yanlış</div>
+            </div>
+            <div class="score-stat-box">
+              <div id="res-time" class="score-number text-art-goldlt">0s</div>
+              <div class="score-label">Süre</div>
+            </div>
+          </div>
+
+          <div class="mt-5 pt-5 border-t border-art-border text-center">
+            <p class="text-art-muted text-xs uppercase tracking-widest mb-1">Toplam Skor</p>
+            <p id="res-score" class="font-playfair text-5xl font-black text-art-goldlt score-glow">0</p>
+            <p class="text-art-muted text-xs mt-1">puan</p>
+          </div>
+        </div>
+
+        <!-- Tekrar oyna / Ana sayfa -->
+        <div class="flex gap-3 mb-8 animate-slide-up" style="animation-delay:0.2s">
+          <button id="btn-replay" class="art-btn-secondary flex-1">🔄 Tekrar Oyna</button>
+          <button id="btn-home" class="art-btn-primary flex-1">🏠 Ana Sayfa</button>
+        </div>
+
+        <!-- Liderlik Tablosu -->
+        <div class="glass-card rounded-3xl p-6 animate-slide-up" style="animation-delay:0.3s">
+          <div class="flex items-center justify-between mb-5">
+            <h3 class="font-playfair text-2xl font-bold text-art-goldlt">🏆 Liderlik Tablosu</h3>
+            <div class="flex gap-2">
+              <button id="btn-export-board" class="text-xs text-art-accentlt hover:text-white transition-colors border border-art-border hover:border-art-accentlt rounded-lg px-3 py-1 flex items-center gap-1">⬇️ İndir</button>
+              <button id="btn-clear-board" class="text-xs text-art-muted hover:text-red-400 transition-colors border border-art-border rounded-lg px-3 py-1">Temizle</button>
+            </div>
+          </div>
+          <div id="scoreboard-list" class="space-y-3">
+            <!-- JS ile doldurulacak -->
+          </div>
+          <p id="scoreboard-empty" class="text-center text-art-muted text-sm py-8 hidden">Henüz kayıt yok. İlk sen ol!</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- app.js ES module olarak yükleniyor; firebase.js import'u için zorunlu -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
