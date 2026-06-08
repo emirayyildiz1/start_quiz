@@ -16,7 +16,7 @@ import { saveScoreToFirestore } from './firebase.js';
 const QUESTIONS = [
   {
     id: 1,
-    image: 'Image/q1_mona_lisa.jpg',
+    image: 'public/images/q1_mona_lisa.jpg',
     question: 'Bu ünlü tablo hangi ressamın eseridir?',
     options: ['Leonardo da Vinci', 'Michelangelo'],
     correct: 'Leonardo da Vinci',
@@ -24,7 +24,7 @@ const QUESTIONS = [
   },
   {
     id: 2,
-    image: 'Image/q2_starry_night.jpg',
+    image: 'public/images/q2_starry_night.jpg',
     question: '"Yıldızlı Gece" adlı bu eseri kim yaratmıştır?',
     options: ['Claude Monet', 'Vincent van Gogh'],
     correct: 'Vincent van Gogh',
@@ -32,7 +32,7 @@ const QUESTIONS = [
   },
   {
     id: 3,
-    image: 'Image/q3_dali.jpg',
+    image: 'public/images/q3_dali.jpg',
     question: 'Salvador Dalí\'nin "Hafızanın Azmi" tablosunda öne çıkan nesne nedir?',
     options: ['Eriyen saatler', 'Uçan filler'],
     correct: 'Eriyen saatler',
@@ -40,7 +40,7 @@ const QUESTIONS = [
   },
   {
     id: 4,
-    image: 'Image/q4_michelangelo.jpg',
+    image: 'public/images/q4_michelangelo.jpg',
     question: '"Sistine Şapeli" tavanını kim boyamıştır?',
     options: ['Raphael', 'Michelangelo'],
     correct: 'Michelangelo',
@@ -48,7 +48,7 @@ const QUESTIONS = [
   },
   {
     id: 5,
-    image: 'Image/q5_american_gothic.jpg',
+    image: 'public/images/q5_american_gothic.jpg',
     question: '"American Gothic" adlı bu ikonik tablo kimin eseridir?',
     options: ['Grant Wood', 'Edward Hopper'],
     correct: 'Grant Wood',
@@ -56,7 +56,7 @@ const QUESTIONS = [
   },
   {
     id: 6,
-    image: 'Image/q6_rembrandt.jpg',
+    image: 'public/images/q6_rembrandt.jpg',
     question: 'Chiaroscuro tekniğiyle ünlü bu Hollandalı ressam kimdir?',
     options: ['Rembrandt van Rijn', 'Johannes Vermeer'],
     correct: 'Rembrandt van Rijn',
@@ -64,7 +64,7 @@ const QUESTIONS = [
   },
   {
     id: 7,
-    image: 'Image/q7_scream.jpg',
+    image: 'public/images/q7_scream.jpg',
     question: '"Çığlık" (The Scream) adlı bu tabloyu hangi ressam yapmıştır?',
     options: ['Edvard Munch', 'Gustav Klimt'],
     correct: 'Edvard Munch',
@@ -72,7 +72,7 @@ const QUESTIONS = [
   },
   {
     id: 8,
-    image: 'Image/q8_klimt.jpg',
+    image: 'public/images/q8_klimt.jpg',
     question: '"Öpücük" (The Kiss) tablosu hangi sanatçıya aittir?',
     options: ['Egon Schiele', 'Gustav Klimt'],
     correct: 'Gustav Klimt',
@@ -80,7 +80,7 @@ const QUESTIONS = [
   },
   {
     id: 9,
-    image: 'Image/q9_hokusai.jpg',
+    image: 'public/images/q9_hokusai.jpg',
     question: '"Kanagawa\'nın Büyük Dalgası" hangi Japon sanatçıya aittir?',
     options: ['Hokusai', 'Hiroshige'],
     correct: 'Hokusai',
@@ -88,7 +88,7 @@ const QUESTIONS = [
   },
   {
     id: 10,
-    image: 'Image/q10_guernica.jpg',
+    image: 'public/images/q10_guernica.jpg',
     question: 'Picasso\'nun hangi eseri Kübizm akımının en simgesel çalışmasıdır?',
     options: ['Guernica', 'Les Demoiselles d\'Avignon'],
     correct: 'Guernica',
